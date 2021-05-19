@@ -7,7 +7,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 
 using StringTools;
 
-class Character extends FlxSprite
+class Dad extends FlxSprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>>;
 
@@ -20,25 +20,11 @@ class Character extends FlxSprite
 		var tex:FlxAtlasFrames;
 		antialiasing = true;
 
-		// make sure the images are in assets/images/<your-character>.png and assets/images/<your-character>.xml then change them below
-		tex = FlxAtlasFrames.fromSparrow(AssetPaths.brandon__png, AssetPaths.brandon__xml);
+		tex = FlxAtlasFrames.fromSparrow(AssetPaths.DADDY_DEAREST__png, AssetPaths.DADDY_DEAREST__xml);
 		frames = tex;
 
-		// make sure to change the animation names to match your xml file animation names
-		// if you add more than 5 animations, be sure to add them to the currentState array in PlayState.hx
-		animation.addByPrefix('idle', 'brandon idle', 24);
-		animation.addByPrefix('singUP', 'brandon up', 24);
-		animation.addByPrefix('singRIGHT', 'brandon right', 24);
-		animation.addByPrefix('singDOWN', 'brandon down', 24);
-		animation.addByPrefix('singLEFT', 'brandon left', 24);
-
-		// i think you need to also do this for any new added poses but im not sure, haven't tried
+		animation.addByPrefix('idle', 'Dad idle dance', 24);
 		addOffset('idle');
-		addOffset("singUP");
-		addOffset("singRIGHT");
-		addOffset("singLEFT");
-		addOffset("singDOWN");
-
 		playAnim('idle');
 	}
 

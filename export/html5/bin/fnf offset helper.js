@@ -913,7 +913,7 @@ ApplicationMain.main = function() {
 ApplicationMain.create = function(config) {
 	var app = new openfl_display_Application();
 	ManifestResources.init(config);
-	app.meta.h["build"] = "40";
+	app.meta.h["build"] = "2";
 	app.meta.h["company"] = "HaxeFlixel";
 	app.meta.h["file"] = "fnf offset helper";
 	app.meta.h["name"] = "fnf offset helper";
@@ -6329,6 +6329,54 @@ Character.prototype = $extend(flixel_FlxSprite.prototype,{
 	}
 	,__class__: Character
 });
+var Dad = function(x,y) {
+	flixel_FlxSprite.call(this,x,y);
+	this.animOffsets = new haxe_ds_StringMap();
+	this.set_antialiasing(true);
+	var tex = flixel_graphics_frames_FlxAtlasFrames.fromSparrow("assets/images/DADDY_DEAREST.png","assets/images/DADDY_DEAREST.xml");
+	this.set_frames(tex);
+	this.animation.addByPrefix("idle","Dad idle dance",24);
+	this.addOffset("idle");
+	this.playAnim("idle");
+};
+$hxClasses["Dad"] = Dad;
+Dad.__name__ = "Dad";
+Dad.__super__ = flixel_FlxSprite;
+Dad.prototype = $extend(flixel_FlxSprite.prototype,{
+	animOffsets: null
+	,update: function(elapsed) {
+		flixel_FlxSprite.prototype.update.call(this,elapsed);
+	}
+	,playAnim: function(AnimName,Force,Reversed,Frame) {
+		if(Frame == null) {
+			Frame = 0;
+		}
+		if(Reversed == null) {
+			Reversed = false;
+		}
+		if(Force == null) {
+			Force = false;
+		}
+		this.animation.play(AnimName,Force,Reversed,Frame);
+		var daOffset = this.animOffsets.h[AnimName];
+		if(Object.prototype.hasOwnProperty.call(this.animOffsets.h,AnimName)) {
+			this.offset.set(daOffset[0],daOffset[1]);
+		} else {
+			this.offset.set(0,0);
+		}
+	}
+	,addOffset: function(name,x,y) {
+		if(y == null) {
+			y = 0;
+		}
+		if(x == null) {
+			x = 0;
+		}
+		var v = [x,y];
+		this.animOffsets.h[name] = v;
+	}
+	,__class__: Dad
+});
 var EReg = function(r,opt) {
 	this.r = new RegExp(r,opt.split("u").join(""));
 };
@@ -7521,8 +7569,11 @@ flixel_FlxState.prototype = $extend(flixel_group_FlxTypedGroup.prototype,{
 	,__properties__: $extend(flixel_group_FlxTypedGroup.prototype.__properties__,{get_subStateClosed:"get_subStateClosed",get_subStateOpened:"get_subStateOpened",set_bgColor:"set_bgColor",get_bgColor:"get_bgColor"})
 });
 var PlayState = function(MaxSize) {
+	this.stampingGuy = true;
 	this.offsetY = 0;
 	this.offsetX = 0;
+	this.gameOffsetY = 0;
+	this.gameOffsetX = 0;
 	this.selectedState = 0;
 	this.currentState = ["idle","singUP","singLEFT","singRIGHT","singDOWN"];
 	flixel_FlxState.call(this,MaxSize);
@@ -7534,34 +7585,85 @@ PlayState.prototype = $extend(flixel_FlxState.prototype,{
 	referenceDude: null
 	,dude: null
 	,bf: null
+	,dad: null
 	,currentState: null
 	,selectedState: null
 	,stateDisplay: null
+	,gameOffsetX: null
+	,gameOffsetY: null
 	,offsetX: null
 	,offsetY: null
-	,xDisplay: null
-	,yDisplay: null
+	,spriteXDisplay: null
+	,spriteYDisplay: null
+	,gameOffsetDisplay: null
+	,stampingGuy: null
 	,create: function() {
 		flixel_FlxG.camera.bgColor = -8355712;
 		this.bf = new Boyfriend(1070,450);
-		this.dude = new Character(400,100);
+		this.dad = new Dad(400,100);
 		this.referenceDude = new Character(400,100);
 		this.add(this.bf);
+		this.add(this.dad);
 		this.add(this.referenceDude);
-		this.add(this.dude);
-		this.stateDisplay = new flixel_text_FlxText(100,20,0,"Current Anim: ",20);
-		this.xDisplay = new flixel_text_FlxText(600,20,0,"X: 0",20);
-		this.yDisplay = new flixel_text_FlxText(700,20,0,"Y: 0",20);
-		this.add(this.stateDisplay);
-		this.add(this.xDisplay);
-		this.add(this.yDisplay);
+		this.gameOffsetDisplay = new flixel_text_FlxText(100,50,0,"Move your character with the \narrow keys \n Match up the bottom of your char \n with the bottom of the Dad.",20);
+		this.add(this.gameOffsetDisplay);
 		flixel_FlxState.prototype.create.call(this);
 	}
 	,update: function(elapsed) {
 		var currentAnim = this.currentState[this.selectedState];
+		if(!this.stampingGuy) {
+			this.animOffsetter(currentAnim);
+		} else {
+			this.baseOffsetter();
+		}
+		flixel_FlxState.prototype.update.call(this,elapsed);
+	}
+	,baseOffsetter: function() {
+		var _this = flixel_FlxG.keys.pressed;
+		if(_this.keyManager.checkStatus(37,_this.status)) {
+			this.gameOffsetDisplay.set_text("Game Offset: " + this.gameOffsetX + ", " + this.gameOffsetY);
+			this.gameOffsetX++;
+			this.referenceDude.addOffset(this.currentState[0],this.gameOffsetX,this.gameOffsetY);
+			this.referenceDude.playAnim(this.currentState[0]);
+		}
+		var _this = flixel_FlxG.keys.pressed;
+		if(_this.keyManager.checkStatus(39,_this.status)) {
+			this.gameOffsetDisplay.set_text("Game Offset: " + this.gameOffsetX + ", " + this.gameOffsetY);
+			this.gameOffsetX--;
+			this.referenceDude.addOffset(this.currentState[0],this.gameOffsetX,this.gameOffsetY);
+			this.referenceDude.playAnim(this.currentState[0]);
+		}
+		var _this = flixel_FlxG.keys.pressed;
+		if(_this.keyManager.checkStatus(38,_this.status)) {
+			this.gameOffsetDisplay.set_text("Game Offset: " + this.gameOffsetX + ", " + this.gameOffsetY);
+			this.gameOffsetY++;
+			this.referenceDude.addOffset(this.currentState[0],this.gameOffsetX,this.gameOffsetY);
+			this.referenceDude.playAnim(this.currentState[0]);
+		}
+		var _this = flixel_FlxG.keys.pressed;
+		if(_this.keyManager.checkStatus(40,_this.status)) {
+			this.gameOffsetDisplay.set_text("Game Offset: " + this.gameOffsetX + ", " + this.gameOffsetY);
+			this.gameOffsetY--;
+			this.referenceDude.addOffset(this.currentState[0],this.gameOffsetX,this.gameOffsetY);
+			this.referenceDude.playAnim(this.currentState[0]);
+		}
+		var _this = flixel_FlxG.keys.justPressed;
+		if(_this.keyManager.checkStatus(13,_this.status)) {
+			this.dude = new Character(400 - this.gameOffsetX,100 - this.gameOffsetY);
+			this.add(this.dude);
+			this.stateDisplay = new flixel_text_FlxText(100,20,0,"Current Anim: ",20);
+			this.add(this.stateDisplay);
+			this.spriteXDisplay = new flixel_text_FlxText(500,20,0,"X: 0",20);
+			this.add(this.spriteXDisplay);
+			this.spriteYDisplay = new flixel_text_FlxText(600,20,0,"Y: 0",20);
+			this.add(this.spriteYDisplay);
+			this.stampingGuy = false;
+		}
+	}
+	,animOffsetter: function(currentAnim) {
 		this.stateDisplay.set_text("Current Anim: " + currentAnim);
-		this.xDisplay.set_text("X: " + this.offsetX);
-		this.yDisplay.set_text("Y: " + this.offsetY);
+		this.spriteXDisplay.set_text("X: " + this.offsetX);
+		this.spriteYDisplay.set_text("Y: " + this.offsetY);
 		var _this = flixel_FlxG.keys.justPressed;
 		if(_this.keyManager.checkStatus(32,_this.status)) {
 			if(this.selectedState + 1 < this.currentState.length) {
@@ -7602,7 +7704,6 @@ PlayState.prototype = $extend(flixel_FlxState.prototype,{
 		if(_this.keyManager.checkStatus(72,_this.status)) {
 			this.bf.set_active(!this.bf.active);
 		}
-		flixel_FlxState.prototype.update.call(this,elapsed);
 	}
 	,__class__: PlayState
 });
@@ -68981,7 +69082,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 257572;
+	this.version = 988504;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = "lime.utils.AssetCache";
