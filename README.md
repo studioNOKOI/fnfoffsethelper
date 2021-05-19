@@ -1,5 +1,6 @@
 # Friday Night Funkin' Character Offset Tool (FNFCOT)
 tool to help determine character animation offsets for friday night funkin'
+demo of how it works here https://studionokoi.github.io/fnfoffset/
 
 # How to use
 1. Add your character png and xml files into assets/images
