@@ -28,6 +28,8 @@ class PlayState extends FlxState
 	var gameOffsetY:Int = 0;
 	var offsetX:Int = 0;
 	var offsetY:Int = 0;
+	
+	var _file:FileReference;
 
 	var spriteXDisplay:FlxText;
 	var spriteYDisplay:FlxText;
