@@ -1,5 +1,6 @@
 # Friday Night Funkin' Character Offset Tool (FNFCOT)
 tool to help determine character animation offsets for friday night funkin'
+
 demo of how it works here https://studionokoi.github.io/fnfoffset/
 
 # How to use
@@ -40,5 +41,7 @@ The X and Y values are what you set the offsets to in Character.hx in the Friday
 
 # Enjoy!!
 I hope you enjoy this program. If you like it, consider following me on twitter here: https://twitter.com/studioNOKOI
+
 You don't have to credit me if you use this in any mods, but I'd like you to show me what you make with it :)
+
 Have fun!
