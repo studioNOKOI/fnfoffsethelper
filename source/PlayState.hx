@@ -7,6 +7,7 @@ import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import flixel.FlxCamera;
 
 class PlayState extends FlxState
 {
@@ -16,7 +17,7 @@ class PlayState extends FlxState
 	var dad:Dad; // also here for reference
 
 	// add any extra animations to this array
-	var currentState:Array<String> = ['idle', 'singUP', 'singLEFT', 'singRIGHT', 'singDOWN'];
+	var currentState:Array<String> = ['idle', 'singUP', 'singUPMISS', 'singLEFT', 'singLEFTMISS', 'singRIGHT', 'singRIGHTMISS', 'singDOWN', 'singDOWNMISS', 'HEY', 'SCARED', 'DEATH', 'DieLOOP', 'Retry'];
 
 	var selectedState:Int = 0;
 	var stateDisplay:FlxText;
@@ -42,7 +43,7 @@ class PlayState extends FlxState
 		add(dad);
 		add(referenceDude);
 		gameOffsetDisplay = new FlxText(100, 50, 0,
-			"Move your character with the \narrow keys \n Match up the bottom of your char \n with the bottom of the Dad.", 20);
+			"CONTROLS: \n Arrow Keys: Move the Character. Enter to stamp the character. \n  C to stop the stamp. \n Z to zoom in and X to zoom out", 20);
 		add(gameOffsetDisplay);
 		super.create();
 	}
@@ -50,6 +51,8 @@ class PlayState extends FlxState
 	override public function update(elapsed:Float)
 	{
 		var currentAnim = currentState[selectedState];
+
+
 
 		if (!stampingGuy)
 		{
@@ -59,7 +62,17 @@ class PlayState extends FlxState
 		{
 			baseOffsetter();
 		}
+		
 		super.update(elapsed);
+		
+		if(FlxG.keys.justReleased.Z)
+			camera.zoom += 0.1;
+		if(FlxG.keys.justReleased.X)
+			camera.zoom -= 0.1;
+		
+			
+			
+		
 	}
 
 	function baseOffsetter()
@@ -104,6 +117,15 @@ class PlayState extends FlxState
 			add(spriteYDisplay);
 			stampingGuy = false;
 		}
+		if (FlxG.keys.justPressed.C)
+		{
+			remove(stateDisplay);
+			remove(spriteXDisplay);
+		    remove(spriteYDisplay);
+			stampingGuy = true;
+		}
+		
+		
 	}
 
 	public function animOffsetter(currentAnim:String)
