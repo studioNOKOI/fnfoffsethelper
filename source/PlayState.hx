@@ -7,6 +7,9 @@ import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
+import openfl.events.Event;
+import openfl.events.IOErrorEvent;
+import openfl.net.FileReference;
 
 class PlayState extends FlxState
 {
@@ -104,6 +107,38 @@ class PlayState extends FlxState
 			add(spriteYDisplay);
 			stampingGuy = false;
 		}
+		
+		// compile le offsets into a text file like week7 accepts and shit.
+
+		if (FlxG.keys.justPressed.E)
+		{
+			var data = "";
+			for (anim => offsets in referenceDude.animOffsets)
+				data += '${anim} ${offsets[0]} ${offsets[1]}\n';
+			if ((data != null) && (data.length > 0))
+			{
+				_file = new FileReference();
+				_file.addEventListener(Event.COMPLETE, onSaveComplete);
+				_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+				_file.save(data, "offsets.txt");
+			}
+		}
+	}
+	
+	function onSaveComplete(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+		FlxG.log.notice("Successfully saved LEVEL DATA.");
+	}
+
+	function onSaveError(_):Void
+	{
+		_file.removeEventListener(Event.COMPLETE, onSaveComplete);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+		_file = null;
+		FlxG.log.error("Problem saving Level data");
 	}
 
 	public function animOffsetter(currentAnim:String)
