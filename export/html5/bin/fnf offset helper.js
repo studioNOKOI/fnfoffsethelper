@@ -913,7 +913,7 @@ ApplicationMain.main = function() {
 ApplicationMain.create = function(config) {
 	var app = new openfl_display_Application();
 	ManifestResources.init(config);
-	app.meta.h["build"] = "2";
+	app.meta.h["build"] = "7";
 	app.meta.h["company"] = "HaxeFlixel";
 	app.meta.h["file"] = "fnf offset helper";
 	app.meta.h["name"] = "fnf offset helper";
@@ -6570,7 +6570,7 @@ ManifestResources.init = function(config) {
 	openfl_text_Font.registerFont(_$_$ASSET_$_$OPENFL_$_$flixel_$fonts_$nokiafc22_$ttf);
 	openfl_text_Font.registerFont(_$_$ASSET_$_$OPENFL_$_$flixel_$fonts_$monsterrat_$ttf);
 	var bundle;
-	var data = "{\"name\":null,\"assets\":\"aoy4:pathy34:assets%2Fdata%2Fdata-goes-here.txty4:sizezy4:typey4:TEXTy2:idR1y7:preloadtgoR0y31:assets%2Fimages%2FBOYFRIEND.pngR2i5042658R3y5:IMAGER5R7R6tgoR0y31:assets%2Fimages%2FBOYFRIEND.xmlR2i67577R3R4R5R9R6tgoR0y29:assets%2Fimages%2Fbrandon.pngR2i411799R3R8R5R10R6tgoR0y29:assets%2Fimages%2Fbrandon.xmlR2i22092R3R4R5R11R6tgoR0y35:assets%2Fimages%2FDADDY_DEAREST.pngR2i1106359R3R8R5R12R6tgoR0y35:assets%2Fimages%2FDADDY_DEAREST.xmlR2i6531R3R4R5R13R6tgoR0y36:assets%2Fimages%2Fimages-go-here.txtR2zR3R4R5R14R6tgoR0y36:assets%2Fmusic%2Fmusic-goes-here.txtR2zR3R4R5R15R6tgoR0y36:assets%2Fsounds%2Fsounds-go-here.txtR2zR3R4R5R16R6tgoR2i2114R3y5:MUSICR5y26:flixel%2Fsounds%2Fbeep.mp3y9:pathGroupaR18y26:flixel%2Fsounds%2Fbeep.ogghR6tgoR2i39706R3R17R5y28:flixel%2Fsounds%2Fflixel.mp3R19aR21y28:flixel%2Fsounds%2Fflixel.ogghR6tgoR2i5794R3y5:SOUNDR5R20R19aR18R20hgoR2i33629R3R23R5R22R19aR21R22hgoR2i15744R3y4:FONTy9:classNamey35:__ASSET__flixel_fonts_nokiafc22_ttfR5y30:flixel%2Ffonts%2Fnokiafc22.ttfR6tgoR2i29724R3R24R25y36:__ASSET__flixel_fonts_monsterrat_ttfR5y31:flixel%2Ffonts%2Fmonsterrat.ttfR6tgoR0y33:flixel%2Fimages%2Fui%2Fbutton.pngR2i519R3R8R5R30R6tgoR0y36:flixel%2Fimages%2Flogo%2Fdefault.pngR2i3280R3R8R5R31R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
+	var data = "{\"name\":null,\"assets\":\"aoy4:pathy34:assets%2Fdata%2Fdata-goes-here.txty4:sizezy4:typey4:TEXTy2:idR1y7:preloadtgoR0y31:assets%2Fimages%2FBOYFRIEND.pngR2i5042658R3y5:IMAGER5R7R6tgoR0y31:assets%2Fimages%2FBOYFRIEND.xmlR2i68078R3R4R5R9R6tgoR0y29:assets%2Fimages%2Fbrandon.pngR2i411799R3R8R5R10R6tgoR0y29:assets%2Fimages%2Fbrandon.xmlR2i21874R3R4R5R11R6tgoR0y35:assets%2Fimages%2FDADDY_DEAREST.pngR2i1106359R3R8R5R12R6tgoR0y35:assets%2Fimages%2FDADDY_DEAREST.xmlR2i6581R3R4R5R13R6tgoR0y36:assets%2Fimages%2Fimages-go-here.txtR2zR3R4R5R14R6tgoR0y36:assets%2Fmusic%2Fmusic-goes-here.txtR2zR3R4R5R15R6tgoR0y36:assets%2Fsounds%2Fsounds-go-here.txtR2zR3R4R5R16R6tgoR2i2114R3y5:MUSICR5y26:flixel%2Fsounds%2Fbeep.mp3y9:pathGroupaR18y26:flixel%2Fsounds%2Fbeep.ogghR6tgoR2i39706R3R17R5y28:flixel%2Fsounds%2Fflixel.mp3R19aR21y28:flixel%2Fsounds%2Fflixel.ogghR6tgoR2i5794R3y5:SOUNDR5R20R19aR18R20hgoR2i33629R3R23R5R22R19aR21R22hgoR2i15744R3y4:FONTy9:classNamey35:__ASSET__flixel_fonts_nokiafc22_ttfR5y30:flixel%2Ffonts%2Fnokiafc22.ttfR6tgoR2i29724R3R24R25y36:__ASSET__flixel_fonts_monsterrat_ttfR5y31:flixel%2Ffonts%2Fmonsterrat.ttfR6tgoR0y33:flixel%2Fimages%2Fui%2Fbutton.pngR2i519R3R8R5R30R6tgoR0y36:flixel%2Fimages%2Flogo%2Fdefault.pngR2i3280R3R8R5R31R6tgh\",\"rootPath\":null,\"version\":2,\"libraryArgs\":[],\"libraryType\":null}";
 	var manifest = lime_utils_AssetManifest.parse(data,ManifestResources.rootPath);
 	var library = lime_utils_AssetLibrary.fromManifest(manifest);
 	lime_utils_Assets.registerLibrary("default",library);
@@ -7570,11 +7570,11 @@ flixel_FlxState.prototype = $extend(flixel_group_FlxTypedGroup.prototype,{
 });
 var PlayState = function(MaxSize) {
 	this.stampingGuy = true;
-	this.offsetY = 0;
-	this.offsetX = 0;
 	this.gameOffsetY = 0;
 	this.gameOffsetX = 0;
 	this.selectedState = 0;
+	this.offsetY = [0,0,0,0,0];
+	this.offsetX = [0,0,0,0,0];
 	this.currentState = ["idle","singUP","singLEFT","singRIGHT","singDOWN"];
 	flixel_FlxState.call(this,MaxSize);
 };
@@ -7587,12 +7587,12 @@ PlayState.prototype = $extend(flixel_FlxState.prototype,{
 	,bf: null
 	,dad: null
 	,currentState: null
+	,offsetX: null
+	,offsetY: null
 	,selectedState: null
 	,stateDisplay: null
 	,gameOffsetX: null
 	,gameOffsetY: null
-	,offsetX: null
-	,offsetY: null
 	,spriteXDisplay: null
 	,spriteYDisplay: null
 	,gameOffsetDisplay: null
@@ -7662,8 +7662,8 @@ PlayState.prototype = $extend(flixel_FlxState.prototype,{
 	}
 	,animOffsetter: function(currentAnim) {
 		this.stateDisplay.set_text("Current Anim: " + currentAnim);
-		this.spriteXDisplay.set_text("X: " + this.offsetX);
-		this.spriteYDisplay.set_text("Y: " + this.offsetY);
+		this.spriteXDisplay.set_text("X: " + this.offsetX[this.selectedState]);
+		this.spriteYDisplay.set_text("Y: " + this.offsetY[this.selectedState]);
 		var _this = flixel_FlxG.keys.justPressed;
 		if(_this.keyManager.checkStatus(32,_this.status)) {
 			if(this.selectedState + 1 < this.currentState.length) {
@@ -7672,32 +7672,32 @@ PlayState.prototype = $extend(flixel_FlxState.prototype,{
 				this.selectedState = 0;
 			}
 			currentAnim = this.currentState[this.selectedState];
-			this.dude.addOffset(currentAnim,this.offsetX,this.offsetY);
+			this.dude.addOffset(currentAnim,this.offsetX[this.selectedState],this.offsetY[this.selectedState]);
 			this.dude.playAnim(currentAnim);
 		}
 		var _this = flixel_FlxG.keys.pressed;
 		if(_this.keyManager.checkStatus(37,_this.status)) {
-			this.offsetX++;
-			this.dude.addOffset(currentAnim,this.offsetX,this.offsetY);
+			this.offsetX[this.selectedState]++;
+			this.dude.addOffset(currentAnim,this.offsetX[this.selectedState],this.offsetY[this.selectedState]);
 			this.dude.playAnim(currentAnim);
 		}
 		var _this = flixel_FlxG.keys.pressed;
 		if(_this.keyManager.checkStatus(39,_this.status)) {
-			this.offsetX--;
-			this.dude.addOffset(currentAnim,this.offsetX,this.offsetY);
+			this.offsetX[this.selectedState]--;
+			this.dude.addOffset(currentAnim,this.offsetX[this.selectedState],this.offsetY[this.selectedState]);
 			this.dude.playAnim(currentAnim);
 		}
 		var _this = flixel_FlxG.keys.pressed;
 		if(_this.keyManager.checkStatus(38,_this.status)) {
-			this.offsetY++;
-			this.dude.addOffset(currentAnim,this.offsetX,this.offsetY);
+			this.offsetY[this.selectedState]++;
+			this.dude.addOffset(currentAnim,this.offsetX[this.selectedState],this.offsetY[this.selectedState]);
 			this.dude.playAnim(currentAnim);
 		}
 		var _this = flixel_FlxG.keys.pressed;
 		if(_this.keyManager.checkStatus(40,_this.status)) {
-			this.offsetY--;
+			this.offsetY[this.selectedState]--;
 			this.add(this.stateDisplay);
-			this.dude.addOffset(currentAnim,this.offsetX,this.offsetY);
+			this.dude.addOffset(currentAnim,this.offsetX[this.selectedState],this.offsetY[this.selectedState]);
 			this.dude.playAnim(currentAnim);
 		}
 		var _this = flixel_FlxG.keys.justPressed;
@@ -69082,7 +69082,7 @@ var lime_utils_AssetCache = function() {
 	this.audio = new haxe_ds_StringMap();
 	this.font = new haxe_ds_StringMap();
 	this.image = new haxe_ds_StringMap();
-	this.version = 988504;
+	this.version = 453728;
 };
 $hxClasses["lime.utils.AssetCache"] = lime_utils_AssetCache;
 lime_utils_AssetCache.__name__ = "lime.utils.AssetCache";

@@ -17,14 +17,14 @@ class PlayState extends FlxState
 
 	// add any extra animations to this array
 	var currentState:Array<String> = ['idle', 'singUP', 'singLEFT', 'singRIGHT', 'singDOWN'];
+	var offsetX:Array<Int> = [0, 0, 0, 0, 0];
+	var offsetY:Array<Int> = [0, 0, 0, 0, 0];
 
 	var selectedState:Int = 0;
 	var stateDisplay:FlxText;
 
 	var gameOffsetX:Int = 0;
 	var gameOffsetY:Int = 0;
-	var offsetX:Int = 0;
-	var offsetY:Int = 0;
 
 	var spriteXDisplay:FlxText;
 	var spriteYDisplay:FlxText;
@@ -109,8 +109,8 @@ class PlayState extends FlxState
 	public function animOffsetter(currentAnim:String)
 	{
 		stateDisplay.text = "Current Anim: " + currentAnim;
-		spriteXDisplay.text = "X: " + offsetX;
-		spriteYDisplay.text = "Y: " + offsetY;
+		spriteXDisplay.text = "X: " + offsetX[selectedState];
+		spriteYDisplay.text = "Y: " + offsetY[selectedState];
 		if (FlxG.keys.justPressed.SPACE)
 		{
 			if (selectedState + 1 < currentState.length)
@@ -122,32 +122,32 @@ class PlayState extends FlxState
 				selectedState = 0;
 			}
 			currentAnim = currentState[selectedState];
-			dude.addOffset(currentAnim, offsetX, offsetY);
+			dude.addOffset(currentAnim, offsetX[selectedState], offsetY[selectedState]);
 			dude.playAnim(currentAnim);
 		}
 		if (FlxG.keys.pressed.LEFT)
 		{
-			offsetX++;
-			dude.addOffset(currentAnim, offsetX, offsetY);
+			offsetX[selectedState]++;
+			dude.addOffset(currentAnim, offsetX[selectedState], offsetY[selectedState]);
 			dude.playAnim(currentAnim);
 		}
 		if (FlxG.keys.pressed.RIGHT)
 		{
-			offsetX--;
-			dude.addOffset(currentAnim, offsetX, offsetY);
+			offsetX[selectedState]--;
+			dude.addOffset(currentAnim, offsetX[selectedState], offsetY[selectedState]);
 			dude.playAnim(currentAnim);
 		}
 		if (FlxG.keys.pressed.UP)
 		{
-			offsetY++;
-			dude.addOffset(currentAnim, offsetX, offsetY);
+			offsetY[selectedState]++;
+			dude.addOffset(currentAnim, offsetX[selectedState], offsetY[selectedState]);
 			dude.playAnim(currentAnim);
 		}
 		if (FlxG.keys.pressed.DOWN)
 		{
-			offsetY--;
+			offsetY[selectedState]--;
 			add(stateDisplay);
-			dude.addOffset(currentAnim, offsetX, offsetY);
+			dude.addOffset(currentAnim, offsetX[selectedState], offsetY[selectedState]);
 			dude.playAnim(currentAnim);
 		}
 		if (FlxG.keys.justPressed.H)
