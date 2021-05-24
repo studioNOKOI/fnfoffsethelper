@@ -1,9 +1,9 @@
 package;
 
-import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.animation.FlxBaseAnimation;
+import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import openfl.display.BitmapData;
 
 using StringTools;
 
@@ -11,7 +11,7 @@ class Character extends FlxSprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>>;
 
-	public function new(x:Float, y:Float)
+	public function new(x:Float, y:Float, sprite:BitmapData, xml:String)
 	{
 		super(x, y);
 
@@ -21,7 +21,7 @@ class Character extends FlxSprite
 		antialiasing = true;
 
 		// make sure the images are in assets/images/<your-character>.png and assets/images/<your-character>.xml then change them below
-		tex = FlxAtlasFrames.fromSparrow(AssetPaths.brandon__png, AssetPaths.brandon__xml);
+		tex = FlxAtlasFrames.fromSparrow(sprite, xml);
 		frames = tex;
 
 		// make sure to change the animation names to match your xml file animation names

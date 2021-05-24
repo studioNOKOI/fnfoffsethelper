@@ -12,6 +12,8 @@
 -D hscript=2.4.0
 -cp C:/HaxeToolkit/haxe/lib/flixel-addons/2,10,0
 -D flixel-addons=2.10.0
+-cp C:/HaxeToolkit/haxe/lib/flixel-ui/2,3,3
+-D flixel-ui=2.3.3
 -cp source
 -D tools=7.9.0
 -D lime-canvas
