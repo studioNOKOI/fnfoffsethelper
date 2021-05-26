@@ -2,16 +2,8 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxState;
-import flixel.addons.ui.FlxUIButton;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import haxe.io.Bytes;
-import haxe.io.Encoding;
-import openfl.display.BitmapData;
-import openfl.events.Event;
-import openfl.net.FileFilter;
-import openfl.net.FileReference;
-import openfl.utils.ByteArray;
 
 class PlayState extends FlxState
 {
@@ -35,32 +27,13 @@ class PlayState extends FlxState
 	var spriteYDisplay:FlxText;
 	var gameOffsetDisplay:FlxText;
 
-	var PNGButton:FlxUIButton;
-	var XMLButton:FlxUIButton;
-
-	var fileUploader:FileReference;
-
-	var pngFile:BitmapData;
-	var xmlFile:Xml;
-
-	var pngImported:Bool = false;
-	var xmlImported:Bool = false;
-
 	var stampingGuy:Bool = true;
 
 	override public function create()
 	{
 		FlxG.camera.bgColor = FlxColor.GRAY;
-		fileUploader = new FileReference();
 
-		PNGButton = new FlxUIButton(320, 360, "upload png", importPNG);
-		PNGButton.resize(300, 200);
-		PNGButton.label.resize(200, 200); // please someone, find a better way to scale the text
-		add(PNGButton);
-		XMLButton = new FlxUIButton(960, 360, "upload xml", importXML);
-		XMLButton.resize(300, 200);
-		XMLButton.label.resize(200, 200); // please someone, find a better way to scale the text
-
+		createAfterUploads();
 		super.create();
 	}
 
@@ -69,11 +42,11 @@ class PlayState extends FlxState
 		// cameraControl();
 		var currentAnim = currentState[selectedState];
 
-		if (!stampingGuy && pngImported && xmlImported)
+		if (!stampingGuy)
 		{
 			animOffsetter(currentAnim);
 		}
-		else if (pngImported && xmlImported)
+		else
 		{
 			baseOffsetter();
 		}
@@ -82,10 +55,9 @@ class PlayState extends FlxState
 
 	function createAfterUploads()
 	{
-		XMLButton.destroy();
 		bf = new Boyfriend(1070, 450);
 		dad = new Dad(400, 100);
-		referenceDude = new Character(400, 100, pngFile, xmlFile.toString());
+		referenceDude = new Character(400, 100);
 		add(bf);
 		add(dad);
 		add(referenceDude);
@@ -126,7 +98,7 @@ class PlayState extends FlxState
 		}
 		if (FlxG.keys.justPressed.ENTER)
 		{
-			dude = new Character(400 - gameOffsetX, 100 - gameOffsetY, pngFile, xmlFile.toString());
+			dude = new Character(400 - gameOffsetX, 100 - gameOffsetY);
 			add(dude);
 			stateDisplay = new FlxText(100, 20, 0, 'Current Anim: ', 20);
 			add(stateDisplay);
@@ -185,71 +157,6 @@ class PlayState extends FlxState
 		if (FlxG.keys.justPressed.H)
 		{
 			bf.active = !bf.active;
-		}
-	}
-
-	function importPNG():Void
-	{
-		fileUploader.addEventListener(Event.SELECT, selectPNG);
-		fileUploader.addEventListener(Event.COMPLETE, loadPNG);
-		trace("import png");
-		#if html5
-		fileUploader.browse([new FileFilter("", ".png", "")]);
-		#end
-		#if desktop
-		fileUploader.browse([new FileFilter("", "png", "")]);
-		#end
-	}
-
-	function selectPNG(e:Event):Void
-	{
-		trace("select png");
-		fileUploader.load();
-	}
-
-	function loadPNG(e:Event):Void
-	{
-		fileUploader.removeEventListener(Event.SELECT, selectPNG);
-		fileUploader.removeEventListener(Event.COMPLETE, loadPNG);
-		trace("load png");
-		BitmapData.loadFromBytes(fileUploader.data).onComplete(function(bdata)
-		{
-			pngFile = bdata;
-		});
-		pngImported = true;
-		add(XMLButton);
-		PNGButton.destroy();
-	}
-
-	function importXML():Void
-	{
-		fileUploader.addEventListener(Event.SELECT, selectXML);
-		fileUploader.addEventListener(Event.COMPLETE, loadXML);
-		trace("import xml");
-		#if html5
-		fileUploader.browse([new FileFilter("", ".xml", "")]);
-		#end
-		#if desktop
-		fileUploader.browse([new FileFilter("", "xml", "")]);
-		#end
-	}
-
-	function selectXML(e:Event):Void
-	{
-		trace("select xml");
-		fileUploader.load();
-	}
-
-	function loadXML(e:Event):Void
-	{
-		trace("load xml");
-		fileUploader.removeEventListener(Event.SELECT, selectXML);
-		fileUploader.removeEventListener(Event.COMPLETE, loadXML);
-
-		xmlImported = true;
-		if (pngImported)
-		{
-			createAfterUploads();
 		}
 	}
 	/*function cameraControl()
