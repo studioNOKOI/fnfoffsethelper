@@ -3,6 +3,7 @@ package;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import haxe.xml.Parser;
 import openfl.display.BitmapData;
 
 using StringTools;
@@ -23,6 +24,8 @@ class Character extends FlxSprite
 		// make sure the images are in assets/images/<your-character>.png and assets/images/<your-character>.xml then change them below
 		tex = FlxAtlasFrames.fromSparrow(sprite, xml);
 		frames = tex;
+
+		var animArray:Array<String>;
 
 		// make sure to change the animation names to match your xml file animation names
 		// if you add more than 5 animations, be sure to add them to the currentState array in PlayState.hx

@@ -2,12 +2,11 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxState;
-import flixel.addons.ui.FlxButtonPlus;
-import flixel.animation.FlxBaseAnimation;
-import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.addons.ui.FlxUIButton;
 import flixel.text.FlxText;
-import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
+import haxe.io.Bytes;
+import haxe.io.Encoding;
 import openfl.display.BitmapData;
 import openfl.events.Event;
 import openfl.net.FileFilter;
@@ -36,14 +35,13 @@ class PlayState extends FlxState
 	var spriteYDisplay:FlxText;
 	var gameOffsetDisplay:FlxText;
 
-	var PNGButton:FlxButtonPlus;
-	var XMLButton:FlxButtonPlus;
+	var PNGButton:FlxUIButton;
+	var XMLButton:FlxUIButton;
 
-	var pngUploader:FileReference;
-	var xmlUploader:FileReference;
+	var fileUploader:FileReference;
 
 	var pngFile:BitmapData;
-	var xmlFile:String;
+	var xmlFile:Xml;
 
 	var pngImported:Bool = false;
 	var xmlImported:Bool = false;
@@ -53,17 +51,15 @@ class PlayState extends FlxState
 	override public function create()
 	{
 		FlxG.camera.bgColor = FlxColor.GRAY;
-		pngUploader = new FileReference();
-		pngUploader.addEventListener(Event.SELECT, selectPNG);
-		pngUploader.addEventListener(Event.COMPLETE, loadPNG);
-		xmlUploader = new FileReference();
-		xmlUploader.addEventListener(Event.SELECT, selectXML);
-		xmlUploader.addEventListener(Event.COMPLETE, loadXML);
+		fileUploader = new FileReference();
 
-		PNGButton = new FlxButtonPlus(200, 200, importPNG, "upload png", 500, 50);
+		PNGButton = new FlxUIButton(320, 360, "upload png", importPNG);
+		PNGButton.resize(300, 200);
+		PNGButton.label.resize(200, 200); // please someone, find a better way to scale the text
 		add(PNGButton);
-		XMLButton = new FlxButtonPlus(800, 200, importXML, "upload xml", 500, 50);
-		add(XMLButton);
+		XMLButton = new FlxUIButton(960, 360, "upload xml", importXML);
+		XMLButton.resize(300, 200);
+		XMLButton.label.resize(200, 200); // please someone, find a better way to scale the text
 
 		super.create();
 	}
@@ -86,11 +82,10 @@ class PlayState extends FlxState
 
 	function createAfterUploads()
 	{
-		PNGButton.destroy();
 		XMLButton.destroy();
 		bf = new Boyfriend(1070, 450);
 		dad = new Dad(400, 100);
-		referenceDude = new Character(400, 100, pngFile, AssetPaths.brandon__xml);
+		referenceDude = new Character(400, 100, pngFile, xmlFile.toString());
 		add(bf);
 		add(dad);
 		add(referenceDude);
@@ -131,7 +126,7 @@ class PlayState extends FlxState
 		}
 		if (FlxG.keys.justPressed.ENTER)
 		{
-			dude = new Character(400 - gameOffsetX, 100 - gameOffsetY, pngFile, AssetPaths.brandon__xml);
+			dude = new Character(400 - gameOffsetX, 100 - gameOffsetY, pngFile, xmlFile.toString());
 			add(dude);
 			stateDisplay = new FlxText(100, 20, 0, 'Current Anim: ', 20);
 			add(stateDisplay);
@@ -195,45 +190,61 @@ class PlayState extends FlxState
 
 	function importPNG():Void
 	{
+		fileUploader.addEventListener(Event.SELECT, selectPNG);
+		fileUploader.addEventListener(Event.COMPLETE, loadPNG);
 		trace("import png");
-		pngUploader.browse([new FileFilter("", ".png", "")]);
+		#if html5
+		fileUploader.browse([new FileFilter("", ".png", "")]);
+		#end
+		#if desktop
+		fileUploader.browse([new FileFilter("", "png", "")]);
+		#end
 	}
 
 	function selectPNG(e:Event):Void
 	{
 		trace("select png");
-		pngUploader.load();
+		fileUploader.load();
 	}
 
 	function loadPNG(e:Event):Void
 	{
+		fileUploader.removeEventListener(Event.SELECT, selectPNG);
+		fileUploader.removeEventListener(Event.COMPLETE, loadPNG);
 		trace("load png");
-		BitmapData.loadFromBytes(pngUploader.data).onComplete(function(bdata)
+		BitmapData.loadFromBytes(fileUploader.data).onComplete(function(bdata)
 		{
 			pngFile = bdata;
 		});
 		pngImported = true;
-		if (xmlImported)
-		{
-			createAfterUploads();
-		}
+		add(XMLButton);
+		PNGButton.destroy();
 	}
 
 	function importXML():Void
 	{
+		fileUploader.addEventListener(Event.SELECT, selectXML);
+		fileUploader.addEventListener(Event.COMPLETE, loadXML);
 		trace("import xml");
-		xmlUploader.browse([new FileFilter("", ".xml", "")]);
+		#if html5
+		fileUploader.browse([new FileFilter("", ".xml", "")]);
+		#end
+		#if desktop
+		fileUploader.browse([new FileFilter("", "xml", "")]);
+		#end
 	}
 
 	function selectXML(e:Event):Void
 	{
 		trace("select xml");
-		xmlUploader.load();
+		fileUploader.load();
 	}
 
 	function loadXML(e:Event):Void
 	{
 		trace("load xml");
+		fileUploader.removeEventListener(Event.SELECT, selectXML);
+		fileUploader.removeEventListener(Event.COMPLETE, loadXML);
 
 		xmlImported = true;
 		if (pngImported)

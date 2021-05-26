@@ -32,7 +32,7 @@ class ApplicationMain
 
 		ManifestResources.init(config);
 
-		app.meta["build"] = "8";
+		app.meta["build"] = "9";
 		app.meta["company"] = "HaxeFlixel";
 		app.meta["file"] = "fnf offset helper";
 		app.meta["name"] = "fnf offset helper";
